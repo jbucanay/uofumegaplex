@@ -25,6 +25,7 @@
    </div>
     <div v-if="movieByYear.length && year !== null" class="movie-container" >
       <div v-for="item in movieByYear" :key="item.imdbID" class="each-movie">
+      <router-link :to="{name: 'singlemovie', params: {id: item.imdbID}}">
       <div class="card" style="width: 14rem;">
         <img class="card-img-top" :src="item.Poster" :alt="item.Title">
           <div class="card-body">
@@ -32,21 +33,25 @@
             <p class="card-text">{{item.Year}}</p>
       </div>
       </div>
-
+    </router-link>
       </div>
     </div>
+   
     <div v-else-if="movies.length && year == null" class="movie-container">
       <div v-for="movie in movies" :key="movie.imdbID" class="each-movie">
+      <router-link :to="{name: 'singlemovie', params: {id: movie.imdbID}}">
       <div class="card" style="width: 14rem;">
           <img class="card-img-top" :src="movie.Poster" alt="Movie poster">
           <div class="card-body">
             <h6 class="card-title">{{movie.Title}}</h6>
             <p class="card-text">{{movie.Year}}</p>
       </div>
+      
       </div>
-
+    </router-link>
     </div>
     </div>
+    
     <div v-else>
    <p class="message">Type a movie name to watch at U of U Megaplex</p>
     
@@ -138,11 +143,12 @@ return {uofu, getData, movies, year, searchTerm, doSearch, type, page, nextPage,
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
-  align-items: center;
+  align-items:flex-start;
 }
 
-.movie-container:hover {
+.each-movie:hover {
   cursor: pointer;
+  margin-top: 15px;
 }
 
 .card-title {
@@ -179,6 +185,10 @@ return {uofu, getData, movies, year, searchTerm, doSearch, type, page, nextPage,
   margin-bottom: 5px;
 }
 
+a {
+  text-decoration: none;
+}
+
 .unfilter {
   margin-left: 5px;
   border-radius: 10px;
@@ -193,7 +203,7 @@ return {uofu, getData, movies, year, searchTerm, doSearch, type, page, nextPage,
   background-color: transparent;
   position: relative;
   animation-name: move;
-  animation-duration: 4s;
+  animation-duration: 15s;
   animation-iteration-count: 1;
   border-radius: 10px;
   font-weight: bolder;
@@ -203,10 +213,10 @@ return {uofu, getData, movies, year, searchTerm, doSearch, type, page, nextPage,
 }
 
 @keyframes move {
-  0%   {background-color:rgb(205, 123, 123); left:0px; top:0px;transform: rotate(20deg);}
-  25%  {background-color:rgb(174, 174, 119); left:900px; top:0px;transform: rotate(40deg);}
-  50%  {background-color:rgb(181, 181, 220); left:500px; top:500px;transform: rotate(80deg);}
-  75%  {background-color:rgb(144, 212, 144); left:90px; top:200px;transform: rotate(120deg);}
-  100% {background-color:rgb(232, 196, 196); left:0px; top:0px;transform: rotate(360deg);}
+  0%   {background-color:rgb(229, 32, 32); left:0px; top:0px;transform: rotate(20deg);}
+  25%  {background-color:rgb(245, 249, 13); left:900px; top:0px;transform: rotate(40deg);}
+  50%  {background-color:rgb(75, 237, 16); left:500px; top:500px;transform: rotate(80deg);}
+  75%  {background-color:rgb(16, 12, 236); left:90px; top:200px;transform: rotate(120deg);}
+  100% {background-color:rgb(218, 48, 181); left:0px; top:0px;transform: rotate(360deg);}
 }
 </style>
