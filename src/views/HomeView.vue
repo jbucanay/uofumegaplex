@@ -142,7 +142,7 @@ return {uofu, getData, movies, year, searchTerm, doSearch, type, page, nextPage,
 .movie-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items:flex-start;
 }
 
@@ -157,7 +157,7 @@ return {uofu, getData, movies, year, searchTerm, doSearch, type, page, nextPage,
 
 .filter {
   display: flex;
-  margin-top: -1%;
+  
   margin-bottom: 2em;
 
 }
@@ -203,7 +203,7 @@ a {
   background-color: transparent;
   position: relative;
   animation-name: move;
-  animation-duration: 15s;
+  animation-duration: 5s;
   animation-iteration-count: 1;
   border-radius: 10px;
   font-weight: bolder;
@@ -213,10 +213,10 @@ a {
 }
 
 @keyframes move {
-  0%   {background-color:rgb(229, 32, 32); left:0px; top:0px;transform: rotate(20deg);}
-  25%  {background-color:rgb(245, 249, 13); left:900px; top:0px;transform: rotate(40deg);}
-  50%  {background-color:rgb(75, 237, 16); left:500px; top:500px;transform: rotate(80deg);}
-  75%  {background-color:rgb(16, 12, 236); left:90px; top:200px;transform: rotate(120deg);}
+  0%   {background-color:rgb(229, 32, 32); left:0px; top:0px;transform: rotate(40deg);}
+  25%  {background-color:rgb(245, 249, 13); left:900px; top:0px;transform: rotate(60deg);}
+  50%  {background-color:rgb(75, 237, 16); left:500px; top:500px;transform: rotate(90deg);}
+  75%  {background-color:rgb(16, 12, 236); left:90px; top:200px;transform: rotate(180deg);}
   100% {background-color:rgb(218, 48, 181); left:0px; top:0px;transform: rotate(360deg);}
 }
 </style>
