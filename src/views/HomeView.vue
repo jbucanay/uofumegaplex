@@ -13,6 +13,7 @@
     <select name="year" v-model="year" class="selectOne" @change="filterByYear(year)">
       <option v-for="movie in movies" :key="movie.imdbID" :value="movie.Year">{{movie.Year}}</option>
     </select>
+    <button @click="year = null" class="unfilter" v-if="year">Unfilter</button>
     </div>
    <div class="navigate" v-if="movies.length">
    <button v-if="page > 1" @click="backPage(); getData(searchTerm,page)" class="btn btn-outline-dark"><svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 0 24 24" width="18px" fill="#000000"><path d="M0 0h24v24H0z" fill="none"/><path d="M11.67 3.87L9.9 2.1 0 12l9.9 9.9 1.77-1.77L3.54 12z"/></svg></button>
@@ -20,7 +21,7 @@
 
    <button @click="nextPage(); getData(searchTerm, page)" class="btn btn-outline-dark next"><svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 20 20" height="18px" viewBox="0 0 20 20" width="18px" fill="#000000"><g><g><rect fill="none" height="20" width="20"/></g></g><g><polygon points="4.59,16.59 6,18 14,10 6,2 4.59,3.41 11.17,10"/></g></svg></button>
 
-
+   
    </div>
     <div v-if="movieByYear.length && year !== null" class="movie-container" >
       <div v-for="item in movieByYear" :key="item.imdbID" class="each-movie">
@@ -108,9 +109,7 @@ const filterByYear = (selectedYear)=> {
     movieByYear.value = movies.value.filter((movie)=> {
       return movie.Year == selectedYear
     })
-    console.log(movieByYear)
 }
-
 
 
 
@@ -140,6 +139,10 @@ return {uofu, getData, movies, year, searchTerm, doSearch, type, page, nextPage,
   flex-wrap: wrap;
   justify-content: space-evenly;
   align-items: center;
+}
+
+.movie-container:hover {
+  cursor: pointer;
 }
 
 .card-title {
@@ -174,6 +177,14 @@ return {uofu, getData, movies, year, searchTerm, doSearch, type, page, nextPage,
   display: flex;
   justify-content: space-between;
   margin-bottom: 5px;
+}
+
+.unfilter {
+  margin-left: 5px;
+  border-radius: 10px;
+  color: white;
+  background: red;
+  font-weight: bold;
 }
 
 .message {
