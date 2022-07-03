@@ -10,7 +10,7 @@
     
     <div  class="filter" v-if="movies.length">
     <p class="filterP">Filter: </p>
-    <select name="year" v-model="year" @change="movieByYear" class="selectOne">
+    <select name="year" v-model="year" class="selectOne" @change="filterByYear(year)">
       <option v-for="movie in movies" :key="movie.imdbID" :value="movie.Year">{{movie.Year}}</option>
     </select>
     <select name="type" v-model="type" @change="movieByType" class="selectTwo">
@@ -25,8 +25,11 @@
 
 
    </div>
-
-    <div v-if="movies.length" class="movie-container">
+    <div v-if="movieByYear.length">
+    <p>Hit</p>
+      <p></p>
+    </div>
+    <div v-if="movies.length " class="movie-container">
     <div v-for="movie in movies" :key="movie.imdbID" class="each-movie">
     <div class="card" style="width: 14rem;">
         <img class="card-img-top" :src="movie.Poster" alt="Movie poster">
@@ -58,6 +61,7 @@ export default {
     const year = ref(null)
     const movies = ref([])
     const noData = ref(null)
+    const movieByYear = ref([])
     const getData = async (searched, pageNum)=> {
       try {
 
@@ -73,7 +77,7 @@ export default {
 
 if(fetched.status === 200){
   movies.value = fetched.data.Search
-  console.log(fetched.data.Search)
+  // console.log(fetched.data.Search)
 }
   
 
@@ -92,13 +96,18 @@ const doSearch = (e)=> {
 const nextPage = ()=> page.value++
 const backPage =()=> page.value > 1 ? page.value-- : null
 
-// const filterByYear = movies.value.filter((movie => {
-//   return movie.year === year
-// })
+const filterByYear = (selectedYear)=> {
+    movieByYear.value = movies.value.filter((movie)=> {
+      return movie.Year == selectedYear
+    })
+    console.log(movieByYear)
+}
 
 
 
-return {uofu, getData, movies, year, searchTerm, doSearch, type, page, nextPage, backPage}
+
+
+return {uofu, getData, movies, year, searchTerm, doSearch, type, page, nextPage, backPage, movieByYear, filterByYear}
 
   }
 
