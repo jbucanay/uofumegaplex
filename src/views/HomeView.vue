@@ -53,7 +53,7 @@
     </div>
     
     <div v-else>
-   <p class="message">Type a movie name to watch at U of U Megaplex</p>
+   <p class="message">Type to search a movie to watch at U of U Megaplex</p>
     
     </div>
   </div>
