@@ -13,9 +13,6 @@
     <select name="year" v-model="year" class="selectOne" @change="filterByYear(year)">
       <option v-for="movie in movies" :key="movie.imdbID" :value="movie.Year">{{movie.Year}}</option>
     </select>
-    <select name="type" v-model="type" @change="movieByType" class="selectTwo">
-      <option v-for="movie in movies" :key="movie.imdbID" :value="movie.Type">{{movie.Type}}</option>
-    </select>
     </div>
    <div class="navigate" v-if="movies.length">
    <button v-if="page > 1" @click="backPage(); getData(searchTerm,page)" class="btn btn-outline-dark"><svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 0 24 24" width="18px" fill="#000000"><path d="M0 0h24v24H0z" fill="none"/><path d="M11.67 3.87L9.9 2.1 0 12l9.9 9.9 1.77-1.77L3.54 12z"/></svg></button>
@@ -25,22 +22,33 @@
 
 
    </div>
-    <div v-if="movieByYear.length">
-    <p>Hit</p>
-      <p></p>
+    <div v-if="movieByYear.length && year !== null" class="movie-container" >
+      <div v-for="item in movieByYear" :key="item.imdbID" class="each-movie">
+      <div class="card" style="width: 14rem;">
+        <img class="card-img-top" :src="item.Poster" :alt="item.Title">
+          <div class="card-body">
+            <h6 class="card-title">{{item.Title}}</h6>
+            <p class="card-text">{{item.Year}}</p>
+      </div>
+      </div>
+
+      </div>
     </div>
-    <div v-if="movies.length " class="movie-container">
-    <div v-for="movie in movies" :key="movie.imdbID" class="each-movie">
-    <div class="card" style="width: 14rem;">
-        <img class="card-img-top" :src="movie.Poster" alt="Movie poster">
-        <div class="card-body">
-          <h6 class="card-title">{{movie.Title}}</h6>
-          <p class="card-text">{{movie.Year}}</p>
-        </div>
-    </div>
+    <div v-else-if="movies.length && year == null" class="movie-container">
+      <div v-for="movie in movies" :key="movie.imdbID" class="each-movie">
+      <div class="card" style="width: 14rem;">
+          <img class="card-img-top" :src="movie.Poster" alt="Movie poster">
+          <div class="card-body">
+            <h6 class="card-title">{{movie.Title}}</h6>
+            <p class="card-text">{{movie.Year}}</p>
+      </div>
+      </div>
 
     </div>
-
+    </div>
+    <div v-else>
+   <p class="message">Type a movie name to watch at U of U Megaplex</p>
+    
     </div>
   </div>
 </template>
@@ -130,7 +138,7 @@ return {uofu, getData, movies, year, searchTerm, doSearch, type, page, nextPage,
 .movie-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-items: center;
 }
 
@@ -166,5 +174,28 @@ return {uofu, getData, movies, year, searchTerm, doSearch, type, page, nextPage,
   display: flex;
   justify-content: space-between;
   margin-bottom: 5px;
+}
+
+.message {
+  width: 200px;
+  height: 120px;
+  background-color: transparent;
+  position: relative;
+  animation-name: move;
+  animation-duration: 4s;
+  animation-iteration-count: 1;
+  border-radius: 10px;
+  font-weight: bolder;
+  text-decoration: double;
+  padding: 5px;
+  
+}
+
+@keyframes move {
+  0%   {background-color:rgb(205, 123, 123); left:0px; top:0px;transform: rotate(20deg);}
+  25%  {background-color:rgb(174, 174, 119); left:900px; top:0px;transform: rotate(40deg);}
+  50%  {background-color:rgb(181, 181, 220); left:500px; top:500px;transform: rotate(80deg);}
+  75%  {background-color:rgb(144, 212, 144); left:90px; top:200px;transform: rotate(120deg);}
+  100% {background-color:rgb(232, 196, 196); left:0px; top:0px;transform: rotate(360deg);}
 }
 </style>
