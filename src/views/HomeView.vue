@@ -7,8 +7,8 @@
         <div class="input-group mb-3">
           <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Search movies" v-model="searchTerm" @keyup.enter="doSearch($event)">
     </div>
-    <!-- v-if="movies.length" -->
-    <div  class="filter">
+    
+    <div  class="filter" v-if="movies.length">
     <p class="filterP">Filter: </p>
     <select name="year" v-model="year" @change="movieByYear" class="selectOne">
       <option v-for="movie in movies" :key="movie.imdbID" :value="movie.Year">{{movie.Year}}</option>
@@ -17,11 +17,11 @@
       <option v-for="movie in movies" :key="movie.imdbID" :value="movie.Type">{{movie.Type}}</option>
     </select>
     </div>
-   <div class="navigate">
-   <button type="button" class="btn btn-outline-dark"><svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 0 24 24" width="18px" fill="#000000"><path d="M0 0h24v24H0z" fill="none"/><path d="M11.67 3.87L9.9 2.1 0 12l9.9 9.9 1.77-1.77L3.54 12z"/></svg></button>
+   <div class="navigate" v-if="movies.length">
+   <button v-if="page > 1" @click="backPage(); getData(searchTerm,page)" class="btn btn-outline-dark"><svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 0 24 24" width="18px" fill="#000000"><path d="M0 0h24v24H0z" fill="none"/><path d="M11.67 3.87L9.9 2.1 0 12l9.9 9.9 1.77-1.77L3.54 12z"/></svg></button>
 
 
-   <button type="button" class="btn btn-outline-dark"><svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 20 20" height="18px" viewBox="0 0 20 20" width="18px" fill="#000000"><g><g><rect fill="none" height="20" width="20"/></g></g><g><polygon points="4.59,16.59 6,18 14,10 6,2 4.59,3.41 11.17,10"/></g></svg></button>
+   <button @click="nextPage(); getData(searchTerm, page)" class="btn btn-outline-dark next"><svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 20 20" height="18px" viewBox="0 0 20 20" width="18px" fill="#000000"><g><g><rect fill="none" height="20" width="20"/></g></g><g><polygon points="4.59,16.59 6,18 14,10 6,2 4.59,3.41 11.17,10"/></g></svg></button>
 
 
    </div>
@@ -52,18 +52,19 @@ export default {
 
   setup(){
     const uofu = ref('https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Utah_Utes_-_U_logo.svg/1121px-Utah_Utes_-_U_logo.svg.png')
+    var page = ref(1)
     const type = ref([])
     const searchTerm = ref(null)
     const year = ref(null)
     const movies = ref([])
     const noData = ref(null)
-    const getData = async (searched)=> {
+    const getData = async (searched, pageNum)=> {
       try {
 
   let fetched = await axios({
   method: 'GET',
   url: 'https://movie-database-alternative.p.rapidapi.com/',
-  params: {s: `${searched}`, r: 'json', page: '2'},
+  params: {s: `${searched}`, r: 'json', page: `${pageNum}`},
   headers: {
     'X-RapidAPI-Key': '783a1338cbmsh8f9ca0a70213a77p187916jsnb7ecdaf85ec1',
     'X-RapidAPI-Host': 'movie-database-alternative.p.rapidapi.com'
@@ -85,8 +86,11 @@ if(fetched.status === 200){
 
 
 const doSearch = (e)=> {
-  getData(e.target.value)
+  getData(e.target.value,page.value)
 }
+
+const nextPage = ()=> page.value++
+const backPage =()=> page.value > 1 ? page.value-- : null
 
 // const filterByYear = movies.value.filter((movie => {
 //   return movie.year === year
@@ -94,7 +98,7 @@ const doSearch = (e)=> {
 
 
 
-return {uofu, getData, movies, year, searchTerm, doSearch, type}
+return {uofu, getData, movies, year, searchTerm, doSearch, type, page, nextPage, backPage}
 
   }
 
@@ -146,5 +150,12 @@ return {uofu, getData, movies, year, searchTerm, doSearch, type}
 
 .selectOne {
   margin-right: 5px;
+}
+
+.navigate {
+  background: beige;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
 }
 </style>
