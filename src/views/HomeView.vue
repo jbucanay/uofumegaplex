@@ -11,7 +11,7 @@
     <div  class="filter" v-if="movies.length">
     <p class="filterP">Filter: </p>
     <select name="year" v-model="year" class="selectOne" @change="filterByYear(year)">
-      <option v-for="movie in movies" :key="movie.imdbID" :value="movie.Year">{{movie.Year}}</option>
+      <option v-for="movie in movies.sort()" :key="movie.imdbID" :value="movie.Year">{{movie.Year}}</option>
     </select>
     <button @click="year = null" class="unfilter" v-if="year">Unfilter</button>
     </div>
@@ -27,7 +27,7 @@
       <div v-for="item in movieByYear" :key="item.imdbID" class="each-movie">
       <router-link :to="{name: 'singlemovie', params: {id: item.imdbID}}">
       <div class="card" style="width: 14rem;">
-        <img class="card-img-top" :src="item.Poster" :alt="item.Title">
+        <img class="card-img-top" :src="item.Poster.length ? item.Poster : posterNotFound" :alt="item.Title">
           <div class="card-body">
             <h6 class="card-title">{{item.Title}}</h6>
             <p class="card-text">{{item.Year}}</p>
@@ -41,7 +41,9 @@
       <div v-for="movie in movies" :key="movie.imdbID" class="each-movie">
       <router-link :to="{name: 'singlemovie', params: {id: movie.imdbID}}">
       <div class="card" style="width: 14rem;">
-          <img class="card-img-top" :src="movie.Poster" alt="Movie poster">
+          <img class="card-img-top" v-if="movie.Poster" :src="movie.Poster" alt="Movie poster">
+          <img class="card-img-top" v-else :src="posterNotFound" alt="Movie poster not found">
+          
           <div class="card-body">
             <h6 class="card-title">{{movie.Title}}</h6>
             <p class="card-text">{{movie.Year}}</p>
@@ -69,7 +71,8 @@ export default {
 
   setup(){
     const uofu = ref('https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Utah_Utes_-_U_logo.svg/1121px-Utah_Utes_-_U_logo.svg.png')
-    var page = ref(1)
+    const posterNotFound = ref('https://lascrucesfilmfest.com/wp-content/uploads/2018/01/no-poster-available-737x1024.jpg')
+    const page = ref(1)
     const type = ref([])
     const searchTerm = ref(null)
     const year = ref(null)
@@ -119,7 +122,7 @@ const filterByYear = (selectedYear)=> {
 
 
 
-return {uofu, getData, movies, year, searchTerm, doSearch, type, page, nextPage, backPage, movieByYear, filterByYear}
+return {uofu, getData, movies, year, searchTerm, doSearch, type, page, nextPage, backPage, movieByYear, filterByYear, posterNotFound}
 
   }
 
